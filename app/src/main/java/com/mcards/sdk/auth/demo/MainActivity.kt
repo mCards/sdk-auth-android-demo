@@ -36,7 +36,12 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        AuthSdkProvider.getInstance().init(getString(R.string.auth0_domain), AUTH0_CLIENT_ID, AUTH0_AUD)
+        // if login appears to succeed, but the 2step screen spins indefinitely without
+        // redirecting to your app, it means the auth0 scheme is incorrect.
+        AuthSdkProvider.getInstance().init(getString(R.string.auth0_domain),
+            AUTH0_CLIENT_ID,
+            AUTH0_AUD,
+            getString(R.string.auth0_scheme))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

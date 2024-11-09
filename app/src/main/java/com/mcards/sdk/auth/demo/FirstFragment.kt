@@ -32,13 +32,10 @@ class FirstFragment : Fragment() {
     private var userPhoneNumber = ""
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentFirstBinding.inflate(inflater)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,6 +66,8 @@ class FirstFragment : Fragment() {
                 val userRegion = user.regionClaim.name
                 // etc
 
+                //since login was handled by the AuthSdk, it already has the token so we can
+                // immediately make API calls
                 vm.requestProfileMetadata()
             }
 
