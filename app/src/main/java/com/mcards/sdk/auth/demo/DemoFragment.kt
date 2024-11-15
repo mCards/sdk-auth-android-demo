@@ -9,7 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.mcards.sdk.auth.AuthSdk
 import com.mcards.sdk.auth.AuthSdkProvider
 import com.mcards.sdk.auth.AuthViewModel
-import com.mcards.sdk.auth.demo.databinding.FragmentFirstBinding
+import com.mcards.sdk.auth.demo.databinding.FragmentDemoBinding
 import com.mcards.sdk.auth.model.auth.DeepLink
 import com.mcards.sdk.auth.model.auth.DeepLink.LinkData
 import com.mcards.sdk.auth.model.auth.DeepLink.LinkMetadata
@@ -25,16 +25,16 @@ import com.mcards.sdk.core.model.AuthTokens
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class DemoFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentDemoBinding? = null
     private val binding get() = _binding!!
     private var userPhoneNumber = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFirstBinding.inflate(inflater)
+        _binding = FragmentDemoBinding.inflate(inflater)
         return binding.root
     }
 

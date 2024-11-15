@@ -1,14 +1,12 @@
 <resources>
     <string name="app_name">Auth SDK demo</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="demo_fragment_label">Demo Fragment</string>
     <string name="quick_login">Quick Login</string>
     <string name="creds_login">Credentials Login</string>
 
     <!-- TODO add your auth0 values gotten from the mCards team -->
-    <string name="auth0_domain">placeholder auth0 domain</string>
-    <string name="auth0_scheme">placeholder auth0 scheme</string>
+    <string name="auth0_domain">mcards-test.au.auth0.com/</string>
+    <string name="auth0_scheme">com.mcards.sdk.auth.demo</string>
 
 </resources>
