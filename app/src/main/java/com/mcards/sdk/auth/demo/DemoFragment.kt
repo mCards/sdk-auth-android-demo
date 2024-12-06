@@ -86,8 +86,8 @@ class DemoFragment : Fragment() {
                 // forceReauthentication() has been called.
                 authSdk.login(requireContext(), loginCallback)
             } else {
-                // if you already have the user's phone number, use this login overload to prepopulate
-                // it on the auth0 login screen:
+                // if you already have the user's phone number, use this login overload to
+                // prepopulate it on the auth0 login screen:
                 authSdk.login(requireContext(), userPhoneNumber, loginCallback)
             }
 
@@ -106,6 +106,9 @@ class DemoFragment : Fragment() {
             // forcing full creds entry.
             authSdk.forceReauthentication(requireContext())
             authSdk.login(requireContext(), loginCallback)
+
+        binding.logoutBtn.setOnClickListener {
+            authSdk.logout(requireContext())
         }
     }
 

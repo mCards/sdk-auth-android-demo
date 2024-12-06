@@ -4,8 +4,9 @@
     <string name="demo_fragment_label">Demo Fragment</string>
     <string name="quick_login">Quick Login</string>
     <string name="creds_login">Credentials Login</string>
+    <string name="logout">Logout</string>
 
-    <!-- TODO add your auth0 values gotten from the mCards team -->
+    <!-- TODO replace with your auth0 values gotten from the mCards team -->
     <string name="auth0_domain">mcards-test.au.auth0.com/</string>
     <string name="auth0_scheme">com.mcards.sdk.auth.demo</string>
 
