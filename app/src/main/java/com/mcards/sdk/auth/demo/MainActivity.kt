@@ -17,6 +17,7 @@ private const val AUTH0_AUD = "https://staging.mcards.com/api"
 //TODO replace with your auth0 client ID gotten from the mCards team
 private const val AUTH0_CLIENT_ID = "DL8XpUmzegVl9dR8QpO9djDifTY7nGyd"
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -35,12 +36,21 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        val authSdk = AuthSdkProvider.getInstance()
+
         // if login appears to succeed, but the 2step screen spins indefinitely without
         // redirecting to your app, it means the auth0 scheme is incorrect.
-        AuthSdkProvider.getInstance().init(getString(R.string.auth0_domain),
+        authSdk.init(getString(R.string.auth0_domain),
             AUTH0_CLIENT_ID,
             AUTH0_AUD,
             BuildConfig.APPLICATION_ID)
+
+        if (BuildConfig.DEBUG) {
+            authSdk.debug()
+        }
+
+        //TODO if using firebase
+        //authSdk.useFirebase()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
