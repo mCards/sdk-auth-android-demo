@@ -1,14 +1,15 @@
 package com.mcards.sdk.auth.demo
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.mcards.sdk.auth.AuthSdk
 import com.mcards.sdk.auth.AuthSdkProvider
-import com.mcards.sdk.auth.AuthViewModel
 import com.mcards.sdk.auth.demo.databinding.FragmentDemoBinding
 import com.mcards.sdk.auth.model.auth.DeepLink
 import com.mcards.sdk.auth.model.auth.DeepLink.LinkData
@@ -20,7 +21,12 @@ import com.mcards.sdk.auth.model.auth.DeepLink.LinkMetadata.LinkNotification
 import com.mcards.sdk.auth.model.auth.DeepLink.LinkMetadata.LinkUser
 import com.mcards.sdk.auth.model.auth.DeepLink.LinkType
 import com.mcards.sdk.auth.model.auth.User
+import com.mcards.sdk.auth.model.profile.ProfileMetadata
 import com.mcards.sdk.core.model.AuthTokens
+import com.mcards.sdk.core.network.SdkResult
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.SingleObserver
+import io.reactivex.rxjava3.disposables.Disposable
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -38,18 +44,9 @@ class DemoFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("CheckResult")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val vm = AuthViewModel.get(requireActivity())
-        requireActivity().runOnUiThread {
-            vm.metadataResponse.observe(viewLifecycleOwner) { response ->
-                response?.getData()?.let {
-                    val metadata = it
-                    val requiresAddress = metadata.requiresAddress
-                }
-            }
-        }
 
         val loginCallback = object : AuthSdk.LoginCallback {
             override fun onSuccess(
@@ -68,7 +65,7 @@ class DemoFragment : Fragment() {
 
                 //since login was handled by the AuthSdk, it already has the token so we can
                 // immediately make API calls
-                vm.requestProfileMetadata()
+                getMetadata()
             }
 
             override fun onFailure(message: String) {
@@ -91,9 +88,10 @@ class DemoFragment : Fragment() {
                 authSdk.login(requireContext(), userPhoneNumber, loginCallback)
             }
 
+            val deepLink = getDummyDeepLink(LinkType.CARD_LINKED)
+
             // if the user is logging in via a firebase dynamic link or deep link, use this
             // override to pass the data in the deep link to our system:
-            val deepLink = getDummyDeepLink(LinkType.CARD_LINKED)
             //authSdk.login(requireContext(), deepLink, loginCallback)
 
             // if you have the user's phone number and a relevant deeplink:
@@ -106,10 +104,62 @@ class DemoFragment : Fragment() {
             // forcing full creds entry.
             authSdk.forceReauthentication(requireContext())
             authSdk.login(requireContext(), loginCallback)
+        }
 
         binding.logoutBtn.setOnClickListener {
             authSdk.logout(requireContext())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : SingleObserver<SdkResult<Boolean>> {
+                    override fun onSubscribe(d: Disposable) {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+
+                    override fun onError(e: Throwable) {
+                        binding.progressBar.visibility = View.GONE
+                    }
+
+                    override fun onSuccess(t: SdkResult<Boolean>) {
+                        val msg = if (t.isSuccessful) {
+                            "Logged out"
+                        } else {
+                            t.errorMsg!!
+                        }
+
+                        Snackbar.make(view, msg, BaseTransientBottomBar.LENGTH_LONG).show()
+                        binding.progressBar.visibility = View.GONE
+
+                        //TODO take any needed action on successful logout
+                    }
+                })
         }
+    }
+
+    @SuppressLint("CheckResult")
+    private fun getMetadata() {
+        AuthSdkProvider.getInstance().getUserProfileMetadata()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(object : SingleObserver<SdkResult<ProfileMetadata>> {
+                override fun onSubscribe(d: Disposable) {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
+                override fun onError(e: Throwable) {
+                    Snackbar.make(requireView(), e.localizedMessage!!, BaseTransientBottomBar.LENGTH_LONG)
+                        .show()
+                    binding.progressBar.visibility = View.GONE
+                }
+
+                override fun onSuccess(t: SdkResult<ProfileMetadata>) {
+                    t.result?.let {
+                        val requiresAddress = it.requiresAddress
+                        //TODO take some action based on the ProfileMetadata
+                    } ?: t.errorMsg?.let {
+                        Snackbar.make(requireView(), it, BaseTransientBottomBar.LENGTH_LONG).show()
+                    }
+
+                    binding.progressBar.visibility = View.GONE
+                }
+            })
     }
 
     override fun onDestroyView() {
