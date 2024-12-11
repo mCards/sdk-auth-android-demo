@@ -111,11 +111,15 @@ class DemoFragment : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : SingleObserver<SdkResult<Boolean>> {
                     override fun onSubscribe(d: Disposable) {
-                        binding.progressBar.visibility = View.VISIBLE
+                        activity?.runOnUiThread {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
                     }
 
                     override fun onError(e: Throwable) {
-                        binding.progressBar.visibility = View.GONE
+                        activity?.runOnUiThread {
+                            binding.progressBar.visibility = View.GONE
+                        }
                     }
 
                     override fun onSuccess(t: SdkResult<Boolean>) {
@@ -125,8 +129,10 @@ class DemoFragment : Fragment() {
                             t.errorMsg!!
                         }
 
-                        Snackbar.make(view, msg, BaseTransientBottomBar.LENGTH_LONG).show()
-                        binding.progressBar.visibility = View.GONE
+                        activity?.runOnUiThread {
+                            Snackbar.make(view, msg, BaseTransientBottomBar.LENGTH_LONG).show()
+                            binding.progressBar.visibility = View.GONE
+                        }
 
                         //TODO take any needed action on successful logout
                     }
@@ -140,13 +146,17 @@ class DemoFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : SingleObserver<SdkResult<ProfileMetadata>> {
                 override fun onSubscribe(d: Disposable) {
-                    binding.progressBar.visibility = View.VISIBLE
+                    activity?.runOnUiThread {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
                 }
 
                 override fun onError(e: Throwable) {
-                    Snackbar.make(requireView(), e.localizedMessage!!, BaseTransientBottomBar.LENGTH_LONG)
-                        .show()
-                    binding.progressBar.visibility = View.GONE
+                    activity?.runOnUiThread {
+                        Snackbar.make(requireView(), e.localizedMessage!!, BaseTransientBottomBar.LENGTH_LONG)
+                            .show()
+                        binding.progressBar.visibility = View.GONE
+                    }
                 }
 
                 override fun onSuccess(t: SdkResult<ProfileMetadata>) {
@@ -154,10 +164,15 @@ class DemoFragment : Fragment() {
                         val requiresAddress = it.requiresAddress
                         //TODO take some action based on the ProfileMetadata
                     } ?: t.errorMsg?.let {
-                        Snackbar.make(requireView(), it, BaseTransientBottomBar.LENGTH_LONG).show()
+                        activity?.runOnUiThread {
+                            Snackbar.make(requireView(), it, BaseTransientBottomBar.LENGTH_LONG)
+                                .show()
+                        }
                     }
 
-                    binding.progressBar.visibility = View.GONE
+                    activity?.runOnUiThread {
+                        binding.progressBar.visibility = View.GONE
+                    }
                 }
             })
     }
