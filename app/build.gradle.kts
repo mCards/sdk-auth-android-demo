@@ -13,7 +13,10 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "0.0.1"
-        addManifestPlaceholders(mapOf("auth0Domain" to "@string/auth0_domain", "auth0Scheme" to "@string/auth0_scheme"))
+        addManifestPlaceholders(
+            mapOf("auth0Domain" to "@string/auth0_domain",
+                "auth0Scheme" to "com.mcards.sdk.auth.demo")
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,15 +39,13 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
