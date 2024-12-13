@@ -7,18 +7,15 @@ The mCards android Auth SDK encapsulates the following functionality:
 3. Change user region
 
 # Usage
-Implementing apps MUST override the following strings for auth0 to work:
+Implementing apps MUST override this string value for auth0 to work:
 
 <string name="auth0_domain">your value here</string>
-<string name="auth0_scheme">your value here</string>
 
 These values are gotten from the mCards team after setting up the client's auth0 instance.
 
-This can also be done by specifying manifest placeholders directly in the gradle script?
+You must then also update the manifest placeholders in the build.gradle file:
 
-e.g. addManifestPlaceholders(mapOf("auth0Domain" to "@string/auth0_domain", "auth0Scheme" to "@string/auth0_scheme"))
-
-This will probably override the manifest placeholders in the sdk in the merged manifest?
+e.g. addManifestPlaceholders(mapOf("auth0Domain" to "@string/auth0_domain", "auth0Scheme" to "your app ID"))
 
 # Importing the Auth SDK
 Add the following to your module-level build.gradle:
