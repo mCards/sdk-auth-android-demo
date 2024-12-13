@@ -50,6 +50,4 @@ dependencyResolutionManagement {
 ```
 
 # Documentation
-Documentation is exported to the project ```/documentation``` folder in both html and javadoc styles.
-
-Conceptual documentation is available at: TODO
+\\\\\Add documentation links here/////
