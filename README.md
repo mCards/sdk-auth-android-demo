@@ -9,13 +9,13 @@ The mCards android Auth SDK encapsulates the following functionality:
 # Usage
 Implementing apps MUST override this string value for auth0 to work:
 
-<string name="auth0_domain">your value here</string>
+```<string name="auth0_domain">your value here</string>```
 
 These values are gotten from the mCards team after setting up the client's auth0 instance.
 
 You must then also update the manifest placeholders in the build.gradle file:
 
-e.g. addManifestPlaceholders(mapOf("auth0Domain" to "@string/auth0_domain", "auth0Scheme" to "your app ID"))
+e.g. ```addManifestPlaceholders(mapOf("auth0Domain" to "@string/auth0_domain", "auth0Scheme" to "your app ID"))```
 
 # Importing the Auth SDK
 The mCards android SDKs are provided via a bill of materials. Add the following to your module-level build.gradle:
