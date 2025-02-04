@@ -182,6 +182,7 @@ class DemoFragment : Fragment() {
         _binding = null
     }
 
+    @Deprecated("We are migrating away from this deeplink implementation in 2025")
     private fun getDummyDeepLink(linkType: LinkType): DeepLink {
         val linkData = LinkData(linkType, "dummy link uuid")
         val linkMetadata = LinkMetadata(

@@ -18,19 +18,21 @@ You must then also update the manifest placeholders in the build.gradle file:
 e.g. addManifestPlaceholders(mapOf("auth0Domain" to "@string/auth0_domain", "auth0Scheme" to "your app ID"))
 
 # Importing the Auth SDK
-Add the following to your module-level build.gradle:
+The mCards android SDKs are provided via a bill of materials. Add the following to your module-level build.gradle:
 
 Groovy:
 ```
-implementation "com.mcards.sdk:auth:$latestVersion"
+implementation(platform("com.mcards.sdk:bom:$latestVersion"))
+implementation "com.mcards.sdk:auth"
 ```
 
 Kotlin:
 ```
-implementation("com.mcards.sdk:auth:$latestVersion")
+implementation(platform("com.mcards.sdk:bom:$latestVersion"))
+implementation("com.mcards.sdk:auth")
 ```
 
-And the following to the project settings.gradle:
+And the following to the project settings.gradle (groovy):
 ```
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -39,7 +41,7 @@ dependencyResolutionManagement {
         mavenCentral()
 
         maven {
-            url = uri("https://maven.pkg.github.com/Wantsa/sdk-auth-android")
+            url = uri("https://maven.pkg.github.com/Wantsa/sdk-bom-android")
             credentials {
                 username = GITHUB_USERNAME
                 password = GITHUB_TOKEN
