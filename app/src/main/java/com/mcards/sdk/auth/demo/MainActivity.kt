@@ -38,9 +38,9 @@ class MainActivity : AppCompatActivity() {
 
         val authSdk = AuthSdkProvider.getInstance()
 
-        // if login appears to succeed, but the 2step screen spins indefinitely without
+        // if login appears to succeed, but the verification code screen spins indefinitely without
         // redirecting to your app, the auth0 scheme might be incorrect. Also make
-        // sure your auth0 domain has no trailing /
+        // sure your auth0 domain has no trailing '/'
         authSdk.init(getString(R.string.auth0_domain),
             AUTH0_CLIENT_ID,
             AUTH0_AUD,
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             authSdk.debug()
         }
 
-        //TODO if using firebase
+        //TODO enable firebase logging if your app supports firebase
         //authSdk.useFirebase()
     }
 

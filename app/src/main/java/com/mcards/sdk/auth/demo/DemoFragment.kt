@@ -63,9 +63,7 @@ class DemoFragment : Fragment() {
                 val userRegion = user.regionClaim.name
                 // etc
 
-                //since login was handled by the AuthSdk, it already has the token so we can
-                // immediately make API calls
-                getMetadata()
+                getUserProfileMetadata()
             }
 
             override fun onFailure(message: String) {
@@ -141,7 +139,10 @@ class DemoFragment : Fragment() {
     }
 
     @SuppressLint("CheckResult")
-    private fun getMetadata() {
+    private fun getUserProfileMetadata() {
+        // example SDK operation
+        // in this case, since login was handled by the AuthSdk, it already has the token so we can
+        // immediately make API calls without having to set the token as a separate step
         AuthSdkProvider.getInstance().getUserProfileMetadata()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : SingleObserver<SdkResult<ProfileMetadata>> {
@@ -182,6 +183,7 @@ class DemoFragment : Fragment() {
         _binding = null
     }
 
+    @Deprecated("We are migrating away from this deeplink implementation in 2025")
     private fun getDummyDeepLink(linkType: LinkType): DeepLink {
         val linkData = LinkData(linkType, "dummy link uuid")
         val linkMetadata = LinkMetadata(
