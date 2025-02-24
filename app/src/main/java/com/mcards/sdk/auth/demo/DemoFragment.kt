@@ -28,6 +28,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
 
+private const val TEST_PHONE_NUMBER = "4052938132"
+
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
@@ -79,7 +81,7 @@ class DemoFragment : Fragment() {
                 // successful login. All the login methods will first attempt an automatic session
                 // refresh without forcing credentials entry if possible, unless
                 // forceReauthentication() has been called.
-                authSdk.login(requireContext(), loginCallback)
+                authSdk.login(requireContext(), TEST_PHONE_NUMBER, loginCallback)
             } else {
                 // if you already have the user's phone number, use this login overload to
                 // prepopulate it on the auth0 login screen:
@@ -101,7 +103,7 @@ class DemoFragment : Fragment() {
             // method. Must be called again before each successive login if you want to keep
             // forcing full creds entry.
             authSdk.forceReauthentication(requireContext())
-            authSdk.login(requireContext(), loginCallback)
+            authSdk.login(requireContext(), TEST_PHONE_NUMBER, loginCallback)
         }
 
         binding.logoutBtn.setOnClickListener {
