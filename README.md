@@ -6,8 +6,8 @@ The mCards android Auth SDK encapsulates the following functionality:
 2. Collect user profile and/or address data
 3. Change user region
 
-# Usage
-Implementing apps MUST override this string value for auth0 to work:
+# Integration
+Apps integrating with the Auth SDK MUST override this string value for auth0 to work:
 
 ```<string name="auth0_domain">your value here</string>```
 
@@ -50,6 +50,15 @@ dependencyResolutionManagement {
     }
 }
 ```
+
+# Test User
+A basic user has been set up using a free SMS service. This user has the minimum amount of data needed to login and perform most SDK operations.
+
+The user's phone number is:
++1 405-293-8132
+
+and SMS codes are received here:
+https://receive-sms.cc/US-Phone-Number/14052938132
 
 # Documentation
 \\\\\Add documentation links here/////
