@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "com.mcards.sdk.auth.demo"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.mcards.sdk.auth.demo"
         minSdk = 28
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
-        versionName = "0.0.1"
+        versionName = "1.0.0"
         addManifestPlaceholders(
             mapOf("auth0Domain" to "@string/auth0_domain",
                 "auth0Scheme" to "com.mcards.sdk.auth.demo")
@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
 
     implementation(platform(libs.sdk.bom))
     implementation(libs.auth)

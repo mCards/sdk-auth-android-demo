@@ -23,7 +23,7 @@ import com.mcards.sdk.auth.model.auth.DeepLink.LinkType
 import com.mcards.sdk.auth.model.auth.User
 import com.mcards.sdk.auth.model.profile.ProfileMetadata
 import com.mcards.sdk.core.model.AuthTokens
-import com.mcards.sdk.core.network.SdkResult
+import com.mcards.sdk.core.network.model.SdkResult
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
@@ -50,7 +50,7 @@ class DemoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val loginCallback = object : AuthSdk.LoginCallback {
+        val loginCallback = object : AuthSdk.Auth0Callback {
             override fun onSuccess(
                 user: User,
                 tokens: AuthTokens,
@@ -81,11 +81,11 @@ class DemoFragment : Fragment() {
                 // successful login. All the login methods will first attempt an automatic session
                 // refresh without forcing credentials entry if possible, unless
                 // forceReauthentication() has been called.
-                authSdk.login(requireContext(), TEST_PHONE_NUMBER, loginCallback)
+                authSdk.auth0Authenticate(requireContext(), TEST_PHONE_NUMBER, loginCallback)
             } else {
                 // if you already have the user's phone number, use this login overload to
                 // prepopulate it on the auth0 login screen:
-                authSdk.login(requireContext(), userPhoneNumber, loginCallback)
+                authSdk.auth0Authenticate(requireContext(), userPhoneNumber, loginCallback)
             }
 
             val deepLink = getDummyDeepLink(LinkType.CARD_LINKED)
@@ -102,12 +102,12 @@ class DemoFragment : Fragment() {
             // Forces the user to enter login credentials the next time you call any login()
             // method. Must be called again before each successive login if you want to keep
             // forcing full creds entry.
-            authSdk.forceReauthentication(requireContext())
-            authSdk.login(requireContext(), TEST_PHONE_NUMBER, loginCallback)
+            authSdk.forceAuth0Reauthentication(requireContext())
+            authSdk.auth0Authenticate(requireContext(), TEST_PHONE_NUMBER, loginCallback)
         }
 
         binding.logoutBtn.setOnClickListener {
-            authSdk.logout(requireContext())
+            authSdk.mCardsLogout(requireContext())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : SingleObserver<SdkResult<Boolean>> {
                     override fun onSubscribe(d: Disposable) {
@@ -166,6 +166,8 @@ class DemoFragment : Fragment() {
                     t.result?.let {
                         val requiresAddress = it.requiresAddress
                         //TODO take some action based on the ProfileMetadata
+                        Snackbar.make(requireView(), "Logged in and fetched profile metadata " +
+                                "successfully", BaseTransientBottomBar.LENGTH_LONG).show()
                     } ?: t.errorMsg?.let {
                         activity?.runOnUiThread {
                             Snackbar.make(requireView(), it, BaseTransientBottomBar.LENGTH_LONG)
@@ -194,7 +196,8 @@ class DemoFragment : Fragment() {
             LinkUser("dummy phone number"),
             LinkCard("dummy card uuid"),
             LinkActivity("dummy activity uuid"),
-            LinkNotification("dummy notification title", "dummy notification body")
+            LinkNotification("dummy notification title", "dummy notification body"),
+            ""
         )
 
         return DeepLink(linkData, linkMetadata)
