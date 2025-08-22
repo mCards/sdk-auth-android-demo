@@ -10,6 +10,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.mcards.sdk.auth.AuthSdkProvider
 import com.mcards.sdk.auth.demo.databinding.ActivityMainBinding
+import com.mcards.sdk.auth.demo.BuildConfig
 
 //TODO replace with your auth0 aud gotten from the mCards team
 private const val AUTH0_AUD = "https://staging.mcards.com/api"

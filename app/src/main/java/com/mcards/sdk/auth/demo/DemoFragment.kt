@@ -21,6 +21,7 @@ import com.mcards.sdk.auth.model.auth.DeepLink.LinkMetadata.LinkNotification
 import com.mcards.sdk.auth.model.auth.DeepLink.LinkMetadata.LinkUser
 import com.mcards.sdk.auth.model.auth.DeepLink.LinkType
 import com.mcards.sdk.auth.model.auth.User
+import com.mcards.sdk.auth.model.metadata.UserMetadata
 import com.mcards.sdk.auth.model.profile.ProfileMetadata
 import com.mcards.sdk.core.model.AuthTokens
 import com.mcards.sdk.core.network.model.SdkResult
@@ -145,9 +146,9 @@ class DemoFragment : Fragment() {
         // example SDK operation
         // in this case, since login was handled by the AuthSdk, it already has the token so we can
         // immediately make API calls without having to set the token as a separate step
-        AuthSdkProvider.getInstance().getUserProfileMetadata()
+        AuthSdkProvider.getInstance().getUserMetadata()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : SingleObserver<SdkResult<ProfileMetadata>> {
+            .subscribeWith(object : SingleObserver<SdkResult<UserMetadata>> {
                 override fun onSubscribe(d: Disposable) {
                     activity?.runOnUiThread {
                         binding.progressBar.visibility = View.VISIBLE
@@ -162,9 +163,9 @@ class DemoFragment : Fragment() {
                     }
                 }
 
-                override fun onSuccess(t: SdkResult<ProfileMetadata>) {
+                override fun onSuccess(t: SdkResult<UserMetadata>) {
                     t.result?.let {
-                        val requiresAddress = it.requiresAddress
+                        val requiresAddress = it.profileMetadata?.requiresAddress
                         //TODO take some action based on the ProfileMetadata
                         Snackbar.make(requireView(), "Logged in and fetched profile metadata " +
                                 "successfully", BaseTransientBottomBar.LENGTH_LONG).show()
