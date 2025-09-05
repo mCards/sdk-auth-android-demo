@@ -18,7 +18,7 @@ You must then also update the manifest placeholders in the build.gradle file:
 e.g. ```addManifestPlaceholders(mapOf("auth0Domain" to "@string/auth0_domain", "auth0Scheme" to "your app ID"))```
 
 # Importing the Auth SDK
-The mCards android SDKs are provided via a bill of materials. Add the following to your module-level build.gradle:
+The mCards android SDKs are provided via a [bill of materials](https://github.com/mCards/sdk-bom-android). Add the following to your module-level build.gradle:
 
 Groovy:
 ```
@@ -61,6 +61,9 @@ and SMS codes are received here:
 https://receive-sms.cc/US-Phone-Number/14052938132
 
 # Documentation
-Documentation Site: https://mcards.readme.io/
+[Documentation site](https://mcards.readme.io/)
 
-Site-Wide Password: mCardsDevDocs
+[SDKs conceptual documentation](https://mcards.readme.io/docs/mcards-sdk-overview)
+
+Password: mCardsDevDocs
+
