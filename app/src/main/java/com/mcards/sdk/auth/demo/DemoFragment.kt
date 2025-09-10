@@ -25,6 +25,7 @@ import com.mcards.sdk.auth.model.metadata.UserMetadata
 import com.mcards.sdk.auth.model.profile.ProfileMetadata
 import com.mcards.sdk.core.model.AuthTokens
 import com.mcards.sdk.core.network.model.SdkResult
+import com.mcards.sdk.core.util.LoggingCallback
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
@@ -75,6 +76,17 @@ class DemoFragment : Fragment() {
         }
 
         val authSdk = AuthSdkProvider.getInstance()
+
+        //optional, to use your standard logging methods
+        authSdk.setLoggingCallback(object : LoggingCallback {
+            override fun log(t: Throwable) {
+                //TODO log exception
+            }
+
+            override fun log(msg: String) {
+                //TODO log message
+            }
+        })
 
         binding.quickLoginBtn.setOnClickListener {
             if (userPhoneNumber.isBlank()) {
