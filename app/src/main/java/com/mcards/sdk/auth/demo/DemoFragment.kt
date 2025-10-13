@@ -12,17 +12,8 @@ import com.mcards.sdk.auth.AuthSdk
 import com.mcards.sdk.auth.AuthSdkProvider
 import com.mcards.sdk.auth.demo.databinding.FragmentDemoBinding
 import com.mcards.sdk.auth.model.auth.DeepLink
-import com.mcards.sdk.auth.model.auth.DeepLink.LinkData
-import com.mcards.sdk.auth.model.auth.DeepLink.LinkMetadata
-import com.mcards.sdk.auth.model.auth.DeepLink.LinkMetadata.AuthenticationStatus
-import com.mcards.sdk.auth.model.auth.DeepLink.LinkMetadata.LinkActivity
-import com.mcards.sdk.auth.model.auth.DeepLink.LinkMetadata.LinkCard
-import com.mcards.sdk.auth.model.auth.DeepLink.LinkMetadata.LinkNotification
-import com.mcards.sdk.auth.model.auth.DeepLink.LinkMetadata.LinkUser
-import com.mcards.sdk.auth.model.auth.DeepLink.LinkType
 import com.mcards.sdk.auth.model.auth.User
 import com.mcards.sdk.auth.model.metadata.UserMetadata
-import com.mcards.sdk.auth.model.profile.ProfileMetadata
 import com.mcards.sdk.core.model.AuthTokens
 import com.mcards.sdk.core.network.model.SdkResult
 import com.mcards.sdk.core.util.LoggingCallback
@@ -101,7 +92,7 @@ class DemoFragment : Fragment() {
                 authSdk.auth0Authenticate(requireContext(), userPhoneNumber, loginCallback)
             }
 
-            val deepLink = getDummyDeepLink(LinkType.CARD_LINKED)
+            val deepLink = DeepLink.getDummyBalanceTransfer()
 
             // if the user is logging in via a firebase dynamic link or deep link, use this
             // override to pass the data in the deep link to our system:
@@ -198,21 +189,5 @@ class DemoFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    @Deprecated("We are migrating away from this deeplink implementation in 2025")
-    private fun getDummyDeepLink(linkType: LinkType): DeepLink {
-        val linkData = LinkData(linkType, "dummy link uuid")
-        val linkMetadata = LinkMetadata(
-            "us",
-            AuthenticationStatus(false),
-            LinkUser("dummy phone number"),
-            LinkCard("dummy card uuid"),
-            LinkActivity("dummy activity uuid"),
-            LinkNotification("dummy notification title", "dummy notification body"),
-            ""
-        )
-
-        return DeepLink(linkData, linkMetadata)
     }
 }
